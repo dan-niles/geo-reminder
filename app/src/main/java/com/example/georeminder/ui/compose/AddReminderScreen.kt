@@ -8,8 +8,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -34,6 +36,7 @@ import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
@@ -94,79 +97,120 @@ fun AddReminderScreen(
                 .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            // Title field with emoji
+            // Title field with icon
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                modifier = Modifier.padding(bottom = 8.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.LocationOn,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.size(20.dp)
+                )
+                Text(
+                    text = "Reminder title",
+                    style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+            }
+            
             OutlinedTextField(
                 value = title,
                 onValueChange = { 
                     title = it
                     titleError = null
                 },
-                label = { Text("📝 Reminder title") },
-                placeholder = { Text("e.g., Pick up groceries") },
+                placeholder = { Text("e.g. Buy flowers") },
                 isError = titleError != null,
                 supportingText = titleError?.let { { Text(it) } },
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true
             )
             
-            // Description field with emoji
-            OutlinedTextField(
-                value = description,
-                onValueChange = { description = it },
-                label = { Text("💬 Description (optional)") },
-                placeholder = { Text("Add more details about this reminder...") },
-                modifier = Modifier.fillMaxWidth(),
-                maxLines = 3
-            )
-            
-            // Location section with emoji
             Text(
-                text = "📍 Location Coordinates",
+                text = "Description (optional)",
                 style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.primary,
+                color = MaterialTheme.colorScheme.onSurface,
                 modifier = Modifier.padding(top = 8.dp)
             )
             
+            OutlinedTextField(
+                value = description,
+                onValueChange = { description = it },
+                placeholder = { Text("Add a note") },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(100.dp),
+                maxLines = 4,
+                minLines = 3
+            )
+            
+            // Location section with icon
             Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                modifier = Modifier.padding(top = 16.dp, bottom = 8.dp)
             ) {
-                OutlinedTextField(
-                    value = latitude,
-                    onValueChange = { 
-                        latitude = it
-                        latitudeError = null
-                    },
-                    label = { Text("🌐 Latitude") },
-                    placeholder = { Text("e.g., 37.7749") },
-                    isError = latitudeError != null,
-                    supportingText = latitudeError?.let { { Text(it) } },
-                    modifier = Modifier.weight(1f),
-                    singleLine = true,
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal)
+                Icon(
+                    imageVector = Icons.Default.LocationOn,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.size(20.dp)
                 )
-                
-                Spacer(modifier = Modifier.width(8.dp))
-                
-                OutlinedTextField(
-                    value = longitude,
-                    onValueChange = { 
-                        longitude = it
-                        longitudeError = null
-                    },
-                    label = { Text("🌍 Longitude") },
-                    placeholder = { Text("e.g., -122.4194") },
-                    isError = longitudeError != null,
-                    supportingText = longitudeError?.let { { Text(it) } },
-                    modifier = Modifier.weight(1f),
-                    singleLine = true,
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal)
+                Text(
+                    text = "Location Coordinates",
+                    style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.colorScheme.onSurface
                 )
             }
             
+            Text(
+                text = "Latitude",
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.padding(bottom = 4.dp)
+            )
+            
+            OutlinedTextField(
+                value = latitude,
+                onValueChange = { 
+                    latitude = it
+                    latitudeError = null
+                },
+                placeholder = { Text("Lat") },
+                isError = latitudeError != null,
+                supportingText = latitudeError?.let { { Text(it) } },
+                modifier = Modifier.fillMaxWidth(),
+                singleLine = true,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal)
+            )
+            
+            Text(
+                text = "Longitude",
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.padding(top = 8.dp, bottom = 4.dp)
+            )
+            
+            OutlinedTextField(
+                value = longitude,
+                onValueChange = { 
+                    longitude = it
+                    longitudeError = null
+                },
+                placeholder = { Text("Lng") },
+                isError = longitudeError != null,
+                supportingText = longitudeError?.let { { Text(it) } },
+                modifier = Modifier.fillMaxWidth(),
+                singleLine = true,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal)
+            )
+            
             // Location Selection Buttons
             Row(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth().padding(top = 16.dp),
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 OutlinedButton(
@@ -176,14 +220,19 @@ fun AddReminderScreen(
                     Icon(
                         imageVector = Icons.Default.LocationOn,
                         contentDescription = null,
-                        modifier = Modifier.padding(end = 6.dp)
+                        modifier = Modifier.padding(end = 6.dp),
+                        tint = MaterialTheme.colorScheme.onSurface
                     )
                     Text("Use Current Location")
                 }
                 
-                OutlinedButton(
+                Button(
                     onClick = onMapSelectionClick,
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier.weight(1f),
+                    colors = androidx.compose.material3.ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        contentColor = MaterialTheme.colorScheme.onPrimary
+                    )
                 ) {
                     Icon(
                         imageVector = Icons.Default.Place,
@@ -238,9 +287,20 @@ fun AddReminderScreen(
                         onSaveClick(title, description, lat, lng, radius)
                     }
                 },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 16.dp),
+                colors = androidx.compose.material3.ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    contentColor = MaterialTheme.colorScheme.onPrimary
+                ),
+                shape = RoundedCornerShape(25.dp)
             ) {
-                Text(if (isEditMode) "Update Reminder" else "Save Reminder")
+                Text(
+                    text = if (isEditMode) "Update Reminder" else "Save Reminder",
+                    modifier = Modifier.padding(vertical = 8.dp),
+                    style = MaterialTheme.typography.titleMedium
+                )
             }
         }
     }

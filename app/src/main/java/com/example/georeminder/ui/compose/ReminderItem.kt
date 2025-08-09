@@ -43,15 +43,12 @@ fun ReminderItem(
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 12.dp, vertical = 6.dp)
+            .padding(horizontal = 16.dp, vertical = 4.dp)
             .clickable { onItemClick(reminder) },
-        shape = RoundedCornerShape(16.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
+        shape = RoundedCornerShape(12.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
         colors = CardDefaults.cardColors(
-            containerColor = if (reminder.isActive) 
-                MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.8f)
-            else 
-                MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
+            containerColor = MaterialTheme.colorScheme.surface
         )
     ) {
         Row(
@@ -65,19 +62,13 @@ fun ReminderItem(
                 imageVector = Icons.Default.LocationOn,
                 contentDescription = null,
                 modifier = Modifier
-                    .size(48.dp)
+                    .size(40.dp)
                     .clip(CircleShape)
                     .background(
-                        if (reminder.isActive) 
-                            MaterialTheme.colorScheme.primary.copy(alpha = 0.15f)
-                        else 
-                            MaterialTheme.colorScheme.outline.copy(alpha = 0.1f)
+                        MaterialTheme.colorScheme.primary.copy(alpha = 0.1f)
                     )
-                    .padding(10.dp),
-                tint = if (reminder.isActive) 
-                    MaterialTheme.colorScheme.primary
-                else 
-                    MaterialTheme.colorScheme.outline
+                    .padding(8.dp),
+                tint = MaterialTheme.colorScheme.primary
             )
             
             // Title and description
@@ -85,7 +76,7 @@ fun ReminderItem(
                 modifier = Modifier
                     .weight(1f)
                     .padding(start = 16.dp),
-                verticalArrangement = Arrangement.spacedBy(4.dp)
+                verticalArrangement = Arrangement.spacedBy(2.dp)
             ) {
                 Text(
                     text = reminder.title,
@@ -98,26 +89,32 @@ fun ReminderItem(
                 if (!reminder.description.isNullOrBlank()) {
                     Text(
                         text = reminder.description,
-                        style = MaterialTheme.typography.bodyMedium,
+                        style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        maxLines = 2,
+                        maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )
                 }
                 
-                // Distance info with icon
+                // Distance and status info
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(4.dp)
+                    horizontalArrangement = Arrangement.spacedBy(4.dp),
+                    modifier = Modifier.padding(top = 4.dp)
                 ) {
                     Text(
-                        text = "🔵 ${reminder.radius.toInt()}m radius",
-                        style = MaterialTheme.typography.labelMedium,
+                        text = "${reminder.radius.toInt()}m radius",
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                    Text(
+                        text = "•",
+                        style = MaterialTheme.typography.labelSmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                     Text(
-                        text = "• ⏰ ${formatCreationDate(reminder.createdAt)}",
-                        style = MaterialTheme.typography.labelMedium,
+                        text = formatCreationDate(reminder.createdAt),
+                        style = MaterialTheme.typography.labelSmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
@@ -126,31 +123,39 @@ fun ReminderItem(
             // Status and menu
             Column(
                 horizontalAlignment = Alignment.End,
-                verticalArrangement = Arrangement.spacedBy(8.dp)
+                verticalArrangement = Arrangement.spacedBy(4.dp)
             ) {
                 // Status badge (clickable to toggle)
                 Text(
-                    text = if (reminder.isActive) "✅ ACTIVE" else "⏸️ INACTIVE",
+                    text = if (reminder.isActive) "ACTIVE" else "INACTIVE",
                     modifier = Modifier
                         .background(
-                            color = if (reminder.isActive) StatusActive else StatusInactive,
-                            shape = RoundedCornerShape(12.dp)
+                            color = if (reminder.isActive) 
+                                MaterialTheme.colorScheme.primary.copy(alpha = 0.1f) 
+                            else 
+                                MaterialTheme.colorScheme.outline.copy(alpha = 0.1f),
+                            shape = RoundedCornerShape(8.dp)
                         )
                         .clickable { onToggleClick(reminder, !reminder.isActive) }
-                        .padding(horizontal = 12.dp, vertical = 6.dp),
+                        .padding(horizontal = 8.dp, vertical = 4.dp),
                     style = MaterialTheme.typography.labelSmall,
-                    color = Color.White,
-                    fontWeight = androidx.compose.ui.text.font.FontWeight.Bold
+                    color = if (reminder.isActive) 
+                        MaterialTheme.colorScheme.primary 
+                    else 
+                        MaterialTheme.colorScheme.outline,
+                    fontWeight = androidx.compose.ui.text.font.FontWeight.Medium
                 )
                 
                 // Menu button
                 IconButton(
-                    onClick = { onMenuClick(reminder) }
+                    onClick = { onMenuClick(reminder) },
+                    modifier = Modifier.size(24.dp)
                 ) {
                     Icon(
                         imageVector = Icons.Default.MoreVert,
                         contentDescription = "Menu",
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.size(16.dp)
                     )
                 }
             }

@@ -46,14 +46,18 @@ fun MainScreen(
                 title = { 
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        horizontalArrangement = Arrangement.spacedBy(12.dp)
                     ) {
                         Icon(
                             imageVector = Icons.Default.LocationOn,
                             contentDescription = null,
-                            tint = MaterialTheme.colorScheme.onPrimary
+                            tint = MaterialTheme.colorScheme.onPrimary,
+                            modifier = Modifier.size(28.dp)
                         )
-                        Text("📍 GeoReminder")
+                        Text(
+                            text = "Geo-Reminder",
+                            style = MaterialTheme.typography.headlineSmall
+                        )
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
