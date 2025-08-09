@@ -1,0 +1,10 @@
+# This file contains machine-specific paths for the Android SDK.
+# Do not commit this file to version control.
+
+# Location of the Android SDK
+sdk.dir=/Users/YourUsername/Library/Android/sdk
+
+# Google Maps API Key
+# Get your API key from Google Cloud Console: https://console.cloud.google.com/
+# Enable: Maps SDK for Android, Places API, Geocoding API
+MAPS_API_KEY=your_google_maps_api_key_here
